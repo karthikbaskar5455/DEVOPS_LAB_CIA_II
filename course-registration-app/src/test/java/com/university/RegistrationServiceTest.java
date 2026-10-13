@@ -163,4 +163,35 @@ class RegistrationServiceTest {
         assertFalse(service.register(student, course));
     }
 
+
+
+
+
+    @Test
+    void shouldAllowRegistrationForLastAvailableSeat() {
+        Student student = new Student("S103", "Priya");
+        Course course = new Course("CS302", "Java", 4, 2, true, null);
+        course.incrementEnrollment(); // One seat is already occupied
+
+        RegistrationService service = new RegistrationService();
+
+        assertTrue(service.register(student, course));
+        assertTrue(student.isRegistered("CS302"));
+        assertEquals(4, student.getTotalCredits());
+        assertEquals(2, course.getCurrentEnrollment());
+    }
+
+    @Test
+    void shouldNotChangeStateWhenCourseIsFull() {
+        Student student = new Student("S104", "Arun");
+        Course course = new Course("CS303", "Java", 4, 1, true, null);
+        course.incrementEnrollment(); // Course is full
+
+        RegistrationService service = new RegistrationService();
+
+        assertFalse(service.register(student, course));
+        assertFalse(student.isRegistered("CS303"));
+        assertEquals(0, student.getTotalCredits());
+        assertEquals(1, course.getCurrentEnrollment());
+    }
 }
