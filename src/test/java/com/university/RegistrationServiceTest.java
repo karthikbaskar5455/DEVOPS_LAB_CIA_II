@@ -150,4 +150,17 @@ class RegistrationServiceTest {
         assertFalse(result);
         assertFalse(student.isRegistered("CS301"));
     }
+
+    @Test 
+    void shouldRejectRegistrationWhenCourseIsFull() {
+        Student student = new Student("S102", "Rahul");
+        Course course = new Course("CS301", "Java", 4, 1, true, null);
+
+        course.incrementEnrollment();
+
+        RegistrationService service = new RegistrationService();
+
+        assertFalse(service.register(student, course));
+    }
+
 }
