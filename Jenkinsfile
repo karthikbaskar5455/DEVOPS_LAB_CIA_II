@@ -12,14 +12,14 @@ pipeline {
             } 
         }
         stage('Package') { 
-            steps { bat 'mvn package' } 
+            steps { 
+                bat 'mvn package' 
             } 
+        } 
     }
     post { 
         success { 
-            archiveArtifacts 
-            artifacts: 'course-registration-app/target/*.jar', 
-            fingerprint: true 
+            archiveArtifacts artifacts: 'course-registration-app/target/*.jar', fingerprint: true
         } 
     } 
 }
